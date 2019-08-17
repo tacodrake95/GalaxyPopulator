@@ -13,16 +13,55 @@ def genStarTag(name="unnamed-star", temp=100, x=0, y=0, size=1.0, numPlanets=5, 
     starTag = '\t<star name="%s" temp="%s" x="%s" y="%s" size="%s" numPlanets="%s" numGasGiants="%s" blackHole="%s">\n\t</star>\n' % (name, temp, x, y, size, numPlanets, numGasGiants, blackHole)
     return starTag
 
-numStars = int(sys.argv[1])
-minStarSize = float(sys.argv[2])
-maxStarSize = float(sys.argv[3])
-minStarTemp = int(sys.argv[4])
-maxStarTemp = int(sys.argv[5])
-minPlanets = int(sys.argv[6])
-maxPlanets = int(sys.argv[7])
-minGasGiants = int(sys.argv[8])
-maxGasGiants = int(sys.argv[9])
-blackHolePct = int(sys.argv[10])
+try:
+    numStars = int(sys.argv[1])
+except:
+    numStars = 100
+
+try:
+    minStarSize = float(sys.argv[2])
+except:
+    minStarSize = 0.25
+
+try:
+    maxStarSize = float(sys.argv[3])
+except:
+    maxStarSize = 2.5
+
+try:
+    minStarTemp = int(sys.argv[4])
+except:
+    minStarTemp = 50
+
+try:
+    maxStarTemp = int(sys.argv[5])
+except:
+    maxStarTemp = 200
+
+try:
+    minPlanets = int(sys.argv[6])
+except:
+    minPlanets = 0
+
+try:
+    maxPlanets = int(sys.argv[7])
+except:
+    maxPlanets = 2
+
+try:
+    minGasGiants = int(sys.argv[8])
+except:
+    minGasGiants = 0
+
+try:
+    maxGasGiants = int(sys.argv[9])
+except:
+    maxGasGiants = 1
+
+try:
+    blackHolePct = int(sys.argv[10])
+except:
+    blackHolePct = 1
 
 starDataList = starData.split("\n")
 starNames = random.sample(starDataList, numStars)
