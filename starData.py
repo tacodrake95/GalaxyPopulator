@@ -1,29 +1,49 @@
 standardHeader = """<galaxy>
-	<star name="Sol" temp="100" x="0" y="0" size="1.0" numPlanets="%s" numGasGiants="%s" >	
-		<planet name="Earth" DIMID="0" dimMapping="">
-			<isKnown>true</isKnown>
-			<fogColor>1.0,1.0,1.0</fogColor>
-			<skyColor>1.0,1.0,1.0</skyColor>
-			<gravitationalMultiplier>100</gravitationalMultiplier>
-			<orbitalDistance>100</orbitalDistance>
-			<orbitalPhi>0</orbitalPhi>
-			<rotationalPeriod>24000</rotationalPeriod>
-			<atmosphereDensity>100</atmosphereDensity>
-			<planet name="Luna" DIMID="2">
-				<isKnown>true</isKnown>
-				<fogColor>1.0,1.0,1.0</fogColor>
-				<skyColor>1.0,1.0,1.0</skyColor>
-				<gravitationalMultiplier>16</gravitationalMultiplier>
-				<orbitalDistance>150</orbitalDistance>
-				<orbitalPhi>0</orbitalPhi>
-				<rotationalPeriod>672,000</rotationalPeriod>
-				<atmosphereDensity>0</atmosphereDensity>
-				<biomeIds>advancedrocketry:moon,advancedrocketry:moondark</biomeIds>
-			</planet>
-		</planet>
-	</star>\n"""
+\t<star name="Sol" temp="100" x="0" y="0" size="1.0" numPlanets="0" numGasGiants="0" >	
+\t\t<planet name="Earth" DIMID="0" dimMapping="">
+\t\t\t<isKnown>true</isKnown>
+\t\t\t<fogColor>1.0,1.0,1.0</fogColor>
+\t\t\t<skyColor>1.0,1.0,1.0</skyColor>
+\t\t\t<gravitationalMultiplier>100</gravitationalMultiplier>
+\t\t\t<orbitalDistance>100</orbitalDistance>
+\t\t\t<orbitalPhi>0</orbitalPhi>
+\t\t\t<rotationalPeriod>24000</rotationalPeriod>
+\t\t\t<atmosphereDensity>100</atmosphereDensity>
+\t\t\t<planet name="Luna" DIMID="2">
+\t\t\t\t<isKnown>true</isKnown>
+\t\t\t\t<fogColor>1.0,1.0,1.0</fogColor>
+\t\t\t\t<skyColor>1.0,1.0,1.0</skyColor>
+\t\t\t\t<gravitationalMultiplier>16</gravitationalMultiplier>
+\t\t\t\t<orbitalDistance>150</orbitalDistance>
+\t\t\t\t<orbitalPhi>0</orbitalPhi>
+\t\t\t\t<rotationalPeriod>672,000</rotationalPeriod>
+\t\t\t\t<atmosphereDensity>0</atmosphereDensity>
+\t\t\t\t<biomeIds>advancedrocketry:moon,advancedrocketry:moondark</biomeIds>
+\t\t\t</planet>
+\t\t</planet>\n"""
 
-starData = """Acamar
+planetHeader = """\t\t<planet name="%s" DIMID="%s">
+\t\t\t<isKnown>false</isKnown>
+\t\t\t<atmosphereDensity>%s</atmosphereDensity>
+\t\t\t<gravitationalMultiplier>%s</gravitationalMultiplier>
+\t\t\t<orbitalDistance>%s</orbitalDistance>
+\t\t\t<orbitalTheta>%s</orbitalTheta>
+\t\t\t<orbitalPhi>%s</orbitalPhi>
+\t\t\t<rotationalPeriod>%s</rotationalPeriod>\n"""
+
+moonHeader = """\t\t\t<planet name="%s" DIMID="%s">
+\t\t\t\t<isKnown>false</isKnown>
+\t\t\t\t<atmosphereDensity>%s</atmosphereDensity>
+\t\t\t\t<gravitationalMultiplier>%s</gravitationalMultiplier>
+\t\t\t\t<orbitalDistance>%s</orbitalDistance>
+\t\t\t\t<orbitalTheta>%s</orbitalTheta>
+\t\t\t\t<orbitalPhi>%s</orbitalPhi>
+\t\t\t\t<rotationalPeriod>%s</rotationalPeriod>
+\t\t\t</planet>\n"""
+
+starTag = '\t<star name="%s" temp="%s" x="%s" y="%s" size="%s" numPlanets="%s" numGasGiants="%s" blackHole="%s">\n'
+
+starNames = """Acamar
 Achernar
 Achird
 Acrab
