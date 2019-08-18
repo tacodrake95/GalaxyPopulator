@@ -379,6 +379,8 @@ Zubenelgenubi
 Zubenelhakrabi
 Zubeneschamali"""
 
+
+# From https://www.fantasynamegenerators.com/planet_names.php
 planetNames = """Nimuria
 Dundunope
 Maccora
