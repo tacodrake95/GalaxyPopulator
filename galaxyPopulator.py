@@ -28,7 +28,31 @@ def genPlanetTag(block, name, rings="false", gasGiant="false", aDens=100, gMul=1
         block.data += starData.planetHeader % (name, block.ID, aDens, gMul, oDist, oTheta, oPhi, rPer)
     return block
 
-def genPlanetSystem(block, name, planetNum, moonNames=[], moon=True):
+def genMoon(block, name, moonNum, numMoons, parentSize=0):
+    
+    ringsChance = random.randint(0,100)
+    if ringsChance > 1:
+        rings = "false"
+    else:
+        rings = "true"
+    
+    aDens = random.randint(0,200)
+    gMul = random.uniform(parentSize / 10, parentSize / 2)
+    oDist = 200*moonNum/(numMoons+1)
+    oTheta = random.randint(0,360)
+    oPhi = random.randint(-45,45)
+
+    
+    if oPhi < 0:
+        oPhi += 180
+
+    rPer = random.randint(1000,100000)
+    block = genPlanetTag(block, name, rings, "false", aDens, gMul, oDist, oTheta, oPhi, rPer, True)
+    block.data += "\t%s" % closePlanetTag
+    block.ID += 1
+    return block
+
+def genPlanetSystem(block, name, planetNum, numPlanets, moonNames=[], parentSize=0):
     
     ringsChance = random.randint(0,100)
     if ringsChance > 1:
@@ -45,8 +69,11 @@ def genPlanetSystem(block, name, planetNum, moonNames=[], moon=True):
         gasGiant = "false"
 
     aDens = random.randint(0,200)
-    gMul = random.randint(50,120)
-    oDist = random.randint(int(200*planetNum/numPlanets) -10, int(200*planetNum/numPlanets)+ 10)
+    if parentSize > 0:
+        gMul = random.uniform(parentSize / 10, parentSize / 2)
+    else:
+        gMul = random.uniform(50,120)
+    oDist = random.randint(int(200*planetNum/(numPlanets+1)) -40, int(200*planetNum/(numPlanets+1)))
     oTheta = random.randint(0,360)
     oPhi = random.randint(-45,45)
 
@@ -55,17 +82,16 @@ def genPlanetSystem(block, name, planetNum, moonNames=[], moon=True):
         oPhi += 180
 
     rPer = random.randint(1000,100000)
-
-    block = genPlanetTag(block, name, rings, gasGiant, aDens, gMul, oDist, oTheta, oPhi, rPer, moon)
+    
+    block = genPlanetTag(block, name, rings, gasGiant, aDens, gMul, oDist, oTheta, oPhi, rPer)
     block.ID += 1
 
-    if not moon:
+    if len(moonNames) > 0:
         moonNum = 1
+        numMoons = len(moonNames)
         for moonName in moonNames:
-            block = genPlanetSystem(block, moonName, moonNum)
+            block = genMoon(block, moonName, moonNum, numMoons, gMul)
             moonNum += 1
-    else:
-        block.data += "\t"
         
     block.data += closePlanetTag
     return block
@@ -90,9 +116,10 @@ def genStarSystem(block, name, planetNames):
     block = genStarTag(block, name, temp, x, y, size, blackHole)
 
     planetNum = 1
+    numPlanets = len(planetNames)
     for name in planetNames:
         moonNames = random.sample(starData.planetNames.split("\n"),numMoons)
-        block = genPlanetSystem(block, name, planetNum, moonNames, False)
+        block = genPlanetSystem(block, name, planetNum, numPlanets, moonNames)
         planetNum += 1
 
     block.data += closeStarTag
@@ -105,7 +132,7 @@ starNameList = random.sample(starData.starNames.split("\n"), numStars)
 
 block = dataBlock(starData.standardHeader + closeStarTag, 3)
 
-numPlanets = random.randint(2,8)
+numPlanets = random.randint(minPlanets,maxPlanets)
 
 for name in starNameList:
     planetNames = random.sample(starData.planetNames.split("\n"), numPlanets)

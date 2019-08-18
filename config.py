@@ -5,6 +5,6 @@ minStarTemp = 50
 maxStarTemp = 200
 minPlanets = 2
 maxPlanets = 5
-minMoons = 0
+minMoons = 1
 maxMoons = 3
 blackHolePct = 1
