@@ -17,13 +17,11 @@ closeStarTag = "\t</star>\n"
 closePlanetTag = "\t\t</planet>\n"
 
 # taken from https://stackoverflow.com/questions/783897/truncating-floats-in-python
-def truncate(f, n):
-    '''Truncates/pads a float f to n decimal places without rounding'''
-    s = '{}'.format(f)
-    if 'e' in s or 'E' in s:
-        return '{0:.{1}f}'.format(f, n)
-    i, p, d = s.partition('.')
-    return '.'.join([i, (d+'0'*n)[:n]])
+def truncate(f):
+    sF = str(f).split(".")
+    intComp = sF[0]
+    decComp = sF[1][0]
+    return float(intComp + "." + decComp)
 
 # generate a star tag, append it to the block, and return the block
 def genStarTag(block, name="unnamed-star", temp=100, x=0, y=0, size=1.0, blackHole="false"):
@@ -108,7 +106,7 @@ def genStarSystem(block, name, planetNames):
     x = int(math.cos(sAng) * sDist)
     y = int(math.sin(sAng) * sDist)
 
-    size = truncate(random.uniform(minStarSize, maxStarSize), 1)
+    size = truncate(random.uniform(minStarSize, maxStarSize))
     
     
     if random.randint(0,100) > blackHolePct:
