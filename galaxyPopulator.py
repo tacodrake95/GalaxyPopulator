@@ -16,7 +16,6 @@ class dataBlock:
 closeStarTag = "\t</star>\n"
 closePlanetTag = "\t\t</planet>\n"
 
-# taken from https://stackoverflow.com/questions/783897/truncating-floats-in-python
 def truncate(f):
     sF = str(f).split(".")
     intComp = sF[0]
