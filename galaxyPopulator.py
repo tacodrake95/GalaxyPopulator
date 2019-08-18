@@ -16,6 +16,14 @@ class dataBlock:
 closeStarTag = "\t</star>\n"
 closePlanetTag = "\t\t</planet>\n"
 
+def truncate(f, n):
+    '''Truncates/pads a float f to n decimal places without rounding'''
+    s = '{}'.format(f)
+    if 'e' in s or 'E' in s:
+        return '{0:.{1}f}'.format(f, n)
+    i, p, d = s.partition('.')
+    return '.'.join([i, (d+'0'*n)[:n]])
+
 def genStarTag(block, name="unnamed-star", temp=100, x=0, y=0, size=1.0, blackHole="false"):
     block.data += starData.starTag % (name, temp, x, y, size, blackHole)
     return block
@@ -36,9 +44,9 @@ def genMoon(block, name, moonNum, numMoons, parentSize=0):
     else:
         rings = "true"
     
-    aDens = random.randint(0,200)
-    gMul = random.uniform(parentSize / 10, parentSize / 2)
-    oDist = 200*moonNum/(numMoons+1)
+    aDens = random.randint(0,100)
+    gMul = random.randint(int(parentSize / 10), int(parentSize / 2))
+    oDist = int(200*moonNum/(numMoons+1))
     oTheta = random.randint(0,360)
     oPhi = random.randint(-45,45)
 
@@ -52,7 +60,7 @@ def genMoon(block, name, moonNum, numMoons, parentSize=0):
     block.ID += 1
     return block
 
-def genPlanetSystem(block, name, planetNum, numPlanets, moonNames=[], parentSize=0):
+def genPlanetSystem(block, name, planetNum, numPlanets, moonNames):
     
     ringsChance = random.randint(0,100)
     if ringsChance > 1:
@@ -69,10 +77,7 @@ def genPlanetSystem(block, name, planetNum, numPlanets, moonNames=[], parentSize
         gasGiant = "false"
 
     aDens = random.randint(0,200)
-    if parentSize > 0:
-        gMul = random.uniform(parentSize / 10, parentSize / 2)
-    else:
-        gMul = random.uniform(50,120)
+    gMul = random.randint(50,120)
     oDist = random.randint(int(200*planetNum/(numPlanets+1)) -40, int(200*planetNum/(numPlanets+1)))
     oTheta = random.randint(0,360)
     oPhi = random.randint(-45,45)
@@ -105,7 +110,7 @@ def genStarSystem(block, name, planetNames):
     x = int(math.cos(sAng) * sDist)
     y = int(math.sin(sAng) * sDist)
 
-    size = random.uniform(minStarSize, maxStarSize)
+    size = truncate(random.uniform(minStarSize, maxStarSize), 1)
     numMoons = random.randint(minMoons, maxMoons)
 
     if random.randint(0,100) > blackHolePct:
