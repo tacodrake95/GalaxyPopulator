@@ -29,7 +29,8 @@ planetHeader = """\t\t<planet name="%s" DIMID="%s">
 \t\t\t<orbitalDistance>%s</orbitalDistance>
 \t\t\t<orbitalTheta>%s</orbitalTheta>
 \t\t\t<orbitalPhi>%s</orbitalPhi>
-\t\t\t<rotationalPeriod>%s</rotationalPeriod>\n"""
+\t\t\t<rotationalPeriod>%s</rotationalPeriod>
+\t\t\t<seaLevel>%s</seaLevel>\n"""
 
 moonHeader = """\t\t\t<planet name="%s" DIMID="%s">
 \t\t\t\t<isKnown>false</isKnown>
@@ -38,7 +39,8 @@ moonHeader = """\t\t\t<planet name="%s" DIMID="%s">
 \t\t\t\t<orbitalDistance>%s</orbitalDistance>
 \t\t\t\t<orbitalTheta>%s</orbitalTheta>
 \t\t\t\t<orbitalPhi>%s</orbitalPhi>
-\t\t\t\t<rotationalPeriod>%s</rotationalPeriod>\n"""
+\t\t\t\t<rotationalPeriod>%s</rotationalPeriod>
+\t\t\t\t<seaLevel>%s</seaLevel>\n"""
 
 starTag = '\t<star name="%s" temp="%s" x="%s" y="%s" size="%s" numPlanets="0" numGasGiants="0" blackHole="%s">\n'
 

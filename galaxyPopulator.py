@@ -9,12 +9,14 @@ class dataBlock:
     def __init__(self, data="", ID=0):
         self.data = data
         self.ID = ID
+        self.pSize = 0
 
 #<star name="Sol" temp="100" x="0" y="0" size="1.0" numPlanets="0" numGasGiants="0" >
 
 
 closeStarTag = "\t</star>\n"
 closePlanetTag = "\t\t</planet>\n"
+oBlock ="\t\t\t\t<oceanBlock>%s</oceanBlock>\n"
 
 def truncate(f, n):
     '''Truncates/pads a float f to n decimal places without rounding'''
@@ -29,88 +31,83 @@ def genStarTag(block, name="unnamed-star", temp=100, x=0, y=0, size=1.0, blackHo
     return block
 
 
-def genPlanetTag(block, name, rings="false", gasGiant="false", aDens=100, gMul=100, oDist=100, oTheta=0, oPhi=0, rPer=24000, moon=False):
+def genPlanetTag(block, name, rings="false", gasGiant="false", aDens=100, gMul=100, oDist=100, oTheta=0, oPhi=0, rPer=24000, seaLevel=64, moon=False):
     if moon:
-        block.data += starData.moonHeader % (name, block.ID, aDens, gMul, oDist, oTheta, oPhi, rPer)
+        block.data += starData.moonHeader % (name, block.ID, aDens, gMul, oDist, oTheta, oPhi, rPer, seaLevel)
     else:
-        block.data += starData.planetHeader % (name, block.ID, aDens, gMul, oDist, oTheta, oPhi, rPer)
+        block.data += starData.planetHeader % (name, block.ID, aDens, gMul, oDist, oTheta, oPhi, rPer, seaLevel)
     return block
 
-def genMoon(block, name, moonNum, numMoons, parentSize=0):
-    
-    ringsChance = random.randint(0,100)
-    if ringsChance > 1:
+def genPlanet(block, name, planetNum, numPlanets):
+    if random.randint(0,100) > ringsPct:
         rings = "false"
     else:
         rings = "true"
-    
-    aDens = random.randint(0,100)
-    gMul = random.randint(int(parentSize / 10), int(parentSize / 2))
-    oDist = int(200*moonNum/(numMoons+1))
-    oTheta = random.randint(0,360)
-    oPhi = random.randint(-45,45)
 
+    aDens = random.randint(minPlanetAtm,maxPlanetAtm)
+    gMul = random.randint(minPlanetG,maxPlanetG)
+    oDist = int(200*planetNum/(numPlanets+1))
+    oTheta = random.randint(minPlanetTheta,maxPlanetTheta)
+    oPhi = random.randint(-45,45)
     
     if oPhi < 0:
         oPhi += 180
 
-    rPer = random.randint(1000,100000)
-    block = genPlanetTag(block, name, rings, "false", aDens, gMul, oDist, oTheta, oPhi, rPer, True)
+    rPer = random.randint(minPlanetRotPer,maxPlanetRotPer)
+    seaLevel = random.randint(minPlanetSea,maxPlanetSea)
+    
+    block = genPlanetTag(block, name, rings, "false", aDens, gMul, oDist, oTheta, oPhi, rPer, seaLevel)
+    block.ID += 1
+    block.pSize = gMul
+    return block
+
+def genMoon(block, name, moonNum, numMoons):
+    if random.randint(0,100) > ringsPct:
+        rings = "false"
+    else:
+        rings = "true"
+    
+    aDens = random.randint(minMoonAtm,maxMoonAtm)
+    gMul = random.randint(int(block.pSize / 10), int(block.pSize/ 2))
+    oDist = int(200*moonNum/(numMoons+1))
+    oTheta = random.randint(minMoonTheta,maxMoonTheta)
+    oPhi = random.randint(-45,45)
+
+    if oPhi < 0:
+        oPhi += 180
+
+    rPer = random.randint(minMoonRotPer,maxMoonRotPer)
+    seaLevel = random.randint(minMoonSea,maxMoonSea)
+
+    block = genPlanetTag(block, name, rings, "false", aDens, gMul, oDist, oTheta, oPhi, rPer, seaLevel, True)
     block.data += "\t%s" % closePlanetTag
     block.ID += 1
     return block
 
 def genPlanetSystem(block, name, planetNum, numPlanets, moonNames):
-    
-    ringsChance = random.randint(0,100)
-    if ringsChance > 1:
-        rings = "false"
-    else:
-        rings = "true"
-    
-    gasGiantChance = random.randint(0,100)
-    if (gasGiantChance > (numPlanets - planetNum + 1) * 100):
-        gasGiant = "false"
-    elif  len(moonNames) >= 2:
-        gasGiant = "true"
-    else:
-        gasGiant = "false"
-
-    aDens = random.randint(0,200)
-    gMul = random.randint(50,120)
-    oDist = random.randint(int(200*planetNum/(numPlanets+1)) -40, int(200*planetNum/(numPlanets+1)))
-    oTheta = random.randint(0,360)
-    oPhi = random.randint(-45,45)
-
-    
-    if oPhi < 0:
-        oPhi += 180
-
-    rPer = random.randint(1000,100000)
-    
-    block = genPlanetTag(block, name, rings, gasGiant, aDens, gMul, oDist, oTheta, oPhi, rPer)
-    block.ID += 1
+    block = genPlanet(block, name, planetNum, numPlanets)
 
     if len(moonNames) > 0:
         moonNum = 1
         numMoons = len(moonNames)
         for moonName in moonNames:
-            block = genMoon(block, moonName, moonNum, numMoons, gMul)
+            block = genMoon(block, moonName, moonNum, numMoons)
             moonNum += 1
         
     block.data += closePlanetTag
     return block
-
-def genStarSystem(block, name, planetNames):
     
+def genStarSystem(block, name, planetNames):
     temp = random.randint(minStarTemp, maxStarTemp)
     
-    sDist = random.randint(50, 750)
+    sDist = random.randint(minStarDist, maxStarDist)
     sAng = random.uniform(0,2*math.pi)
+    
     x = int(math.cos(sAng) * sDist)
     y = int(math.sin(sAng) * sDist)
 
     size = truncate(random.uniform(minStarSize, maxStarSize), 1)
+    
     numMoons = random.randint(minMoons, maxMoons)
 
     if random.randint(0,100) > blackHolePct:
