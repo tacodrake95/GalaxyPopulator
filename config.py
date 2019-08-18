@@ -1,0 +1,10 @@
+numStars = 50
+minStarSize = 0.25
+maxStarSize = 2.5
+minStarTemp = 50
+maxStarTemp = 200
+minPlanets = 2
+maxPlanets = 5
+minMoons = 0
+maxMoons = 3
+blackHolePct = 1
