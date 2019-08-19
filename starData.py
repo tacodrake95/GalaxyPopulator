@@ -1,5 +1,5 @@
 standardHeader = """<galaxy>
-\t<star name="Sol" temp="100" x="0" y="0" size="1.0" numPlanets="0" numGasGiants="0" >	
+\t<star name="Sol" temp="100" x="%s" y="%s" size="1.0" numPlanets="0" numGasGiants="0" >	
 \t\t<planet name="Earth" DIMID="0" dimMapping="">
 \t\t\t<isKnown>true</isKnown>
 \t\t\t<fogColor>1.0,1.0,1.0</fogColor>
@@ -43,6 +43,7 @@ moonHeader = """\t\t\t<planet name="%s" DIMID="%s">
 \t\t\t\t<seaLevel>%s</seaLevel>\n"""
 
 starTag = '\t<star name="%s" temp="%s" x="%s" y="%s" size="%s" numPlanets="0" numGasGiants="0" blackHole="%s">\n'
+starTag2 = '\t\t<star name="%s" temp="%s" size="%s" separation="%s" />\n'
 
 starNames = """Acamar
 Achernar

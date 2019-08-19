@@ -25,6 +25,11 @@ def truncate(f):
 # generate a star tag, append it to the block, and return the block
 def genStarTag(block, name="unnamed-star", temp=100, x=0, y=0, size=1.0, blackHole="false"):
     block.data += starData.starTag % (name, temp, x, y, size, blackHole)
+    block.pSize = size
+    return block
+
+def genSubStarTag(block, name = "unnamed-star", temp=100, size=1.0, dist=1.0):
+    block.data += starData.starTag2 % (name, temp, size, dist)
     return block
 
 # generate a planet tag, append it to the block, and return the block
@@ -44,7 +49,7 @@ def genPlanet(block, name, planetNum, numPlanets):
 
     aDens = random.randint(minPlanetAtm,maxPlanetAtm)
     gMul = random.randint(minPlanetG,maxPlanetG)
-    oDist = int(200*planetNum/(numPlanets+1))
+    oDist = int(maxPlanetDistance*planetNum/(numPlanets+1))
     oTheta = random.randint(minPlanetTheta,maxPlanetTheta)
     oPhi = random.randint(-45,45)
     if oPhi < 0:
@@ -67,7 +72,7 @@ def genMoon(block, name, moonNum, numMoons):
     
     aDens = random.randint(minMoonAtm,maxMoonAtm)
     gMul = random.randint(int(block.pSize / 10), int(block.pSize/ 2))
-    oDist = int(200*moonNum/(numMoons+1))
+    oDist = int(maxPlanetDistance*moonNum/(numMoons+1))
     oTheta = random.randint(minMoonTheta,maxMoonTheta)
     oPhi = random.randint(-45,45)
     if oPhi < 0:
@@ -95,25 +100,33 @@ def genPlanetSystem(block, name, planetNum, numPlanets, moonNames):
     block.data += closePlanetTag
     return block
     
+def genSupMass(block, name):
+    block = genStarTag(block, name, 100, 0, 0, 5.0, "true")
+    block.data += closeStarTag
+    return block
+
 # generate a star system with planet systems, append it to the block, and return the block
-def genStarSystem(block, name, planetNames):
+def genStarSystem(block, name, planetNames, sDist=random.randint(minStarDist, maxStarDist), sAng=random.uniform(0,2*math.pi)):
     temp = random.randint(minStarTemp, maxStarTemp)
     
-    sDist = random.randint(minStarDist, maxStarDist)
-    sAng = random.uniform(0,2*math.pi)
-    
-    x = int(math.cos(sAng) * sDist)
-    y = int(math.sin(sAng) * sDist)
+    x = int(math.cos(sAng) * sDist * starSpread)
+    y = int(math.sin(sAng) * sDist * starSpread)
 
     size = truncate(random.uniform(minStarSize, maxStarSize))
     
     
-    if random.randint(0,100) > blackHolePct:
+    if random.randint(0,1000) > blackHolePct:
         blackHole = "false"
     else:
         blackHole = "true"
 
     block = genStarTag(block, name, temp, x, y, size, blackHole)
+    numStars = random.randint(minStars, maxStars)
+    for i in range(1,numStars):
+        temp = random.randint(50,200)
+        dist = truncate(((8*i)+random.uniform(-3,3))/numStars)
+        size = truncate(random.uniform(block.pSize / 4, block.pSize / 2))
+        block = genSubStarTag(block, name, temp, size, dist)
 
     planetNum = 1
     numPlanets = len(planetNames)
@@ -134,23 +147,41 @@ def genStarSystem(block, name, planetNames):
 
 
 # grab a sample of star names
-starNameList = random.sample(starData.starNames.split("\n"), numStars)
+starNameList = random.sample(starData.starNames.split("\n"), numSystems)
 
-# initialise block with a standard header
-block = dataBlock(starData.standardHeader + closeStarTag, 3)
+# initialise datablock with supermassive black hole
+block = dataBlock("",3)
+block = genSupMass(block,"Cignus A*")
+
+radius = 50 / starSpread
+angle = 0
+solCreated=False
+
+print (starSpread)
 
 # generate the stars
 for name in starNameList:
-    
     # pick number of planets
     numPlanets = random.randint(minPlanets,maxPlanets)
     # grab a sample of planet names
     planetNames = random.sample(starData.planetNames.split("\n"), numPlanets)
     # append data to block
-    block = genStarSystem(block, name, planetNames)
+    if radius >= solDist * maxStarDist and not solCreated:
+        # prepend block with a standard header
+        solPosX = int(math.cos(angle)*radius)
+        solPosY = int(math.sin(angle)*radius)
+        solCreated = True
+    else:
+        block = genStarSystem(block, name, planetNames, radius, angle)
+    radius += incPerCyc
+    angle += math.pi / (math.pow(math.pi, math.pi) * spirSeverity) + (math.tau / numArms)
 
-# close galaxy tag
-block.data += "\n</galaxy>"
+# make sure Sol is generated
+if not solCreated:
+    solPosX = int(math.cos(angle)*maxStarDist)
+    solPosY = int(math.sin(angle)*maxStarDist)
+
+block.data = starData.standardHeader % (solPosX, solPosY) + closeStarTag + block.data + "\n</galaxy>"
 
 output = open("planetDefs.xml", "w")
 
