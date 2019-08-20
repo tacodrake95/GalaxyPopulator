@@ -174,12 +174,12 @@ for name in starNameList:
     else:
         block = genStarSystem(block, name, planetNames, radius, angle)
     radius += incPerCyc
-    angle += math.pi / (math.pow(math.pi, math.pi) * spirSeverity) + (math.tau / numArms)
+    angle +=  (8.64 * spirSeverity / numSystems) + (math.tau / numArms)
 
 # make sure Sol is generated
 if not solCreated:
-    solPosX = int(math.cos(angle)*maxStarDist)
-    solPosY = int(math.sin(angle)*maxStarDist)
+    solPosX = int(math.cos(angle)*maxStarDist*solDist)
+    solPosY = int(math.sin(angle)*maxStarDist*solDist)
 
 block.data = starData.standardHeader % (solPosX, solPosY) + closeStarTag + block.data + "\n</galaxy>"
 
