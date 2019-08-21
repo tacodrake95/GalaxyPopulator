@@ -1,14 +1,14 @@
 numArms = 4
 incPerCyc = 0.5
 spirSeverity = 1
-numSystems = 100
+numSystems = 200
 minStars = 0
-maxStars = 3
+maxStars = 1
 minStarSize = 0.25
 maxStarSize = 2.5
 minStarTemp = 50
 maxStarTemp = 200
-minStarDist = 50
+minStarDist = 25
 maxStarDist = 750
 minPlanets = 2
 maxPlanets = 5
@@ -35,9 +35,10 @@ minMoonSea = 32
 maxMoonSea = 96
 blackHolePct = 1
 ringsPct = 1
-solDist = 5
+solDist = .25
 #starSpread = 2
-starSpread = maxStarDist /(numSystems * incPerCyc)
+rescaleFactor = 2
+starSpread = (maxStarDist * rescaleFactor) / (numSystems * incPerCyc)
 
 starNames = """Acamar
 Achernar

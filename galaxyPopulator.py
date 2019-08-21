@@ -135,7 +135,10 @@ class star:
         x = int(math.cos(sAng) * sDist * starSpread)
         y = int(math.sin(sAng) * sDist * starSpread)
 
-        size = truncate(random.uniform(minStarSize, maxStarSize))
+        if blackHole=="true":
+            size = 5
+        else:
+            size = truncate(random.uniform(minStarSize, maxStarSize))
 
         prop=["name", 
               "temp", 
@@ -217,7 +220,7 @@ supMass = star("Cignus A*", 0, 0, "true")
 luna = genLuna()
 earth = genOverworld()
 earth.append(luna)
-sol = star("Sol", solDist * maxStarDist/math.pow(starSpread, 2), random.randint(0,360))
+sol = star("Sol", solDist * maxStarDist / starSpread, random.randint(0,360))
 sol.data.append(earth)
 galaxy.append(supMass.data)
 galaxy.append(sol.data)
@@ -227,15 +230,15 @@ for name in starNameList:
     # grab a sample of planet names
     planetNames = random.sample(planetList, numPlanets)
     # append data to block
-    if radius >= solDist*maxStarDist:
-        newStar = star("Sol")
     newStar = star(name, radius, angle)
     newStar.genSisters(name, random.randint(minStars, maxStars))
     ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
     galaxy.append(newStar.data)
-    radius += incPerCyc
-    angle +=  (8.64 * spirSeverity / numSystems) + (math.tau / numArms)
+    incPerCyc -= incPerCyc / (numSystems * numArms)
+    radius += (incPerCyc / numArms)
+    angle +=  (.864 * spirSeverity * radius / numSystems) + (math.tau / numArms)
   
 
 output = open("planetDefs.xml", "w")
 output.write(galaxy.toXML())
+output.close()
