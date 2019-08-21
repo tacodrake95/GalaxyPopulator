@@ -1,4 +1,6 @@
-numArms = 4
+import math
+
+numArms = 3
 incPerCyc = 0.5
 spirSeverity = 1
 numSystems = 200
@@ -8,8 +10,8 @@ minStarSize = 0.25
 maxStarSize = 2.5
 minStarTemp = 50
 maxStarTemp = 200
-minStarDist = 25
-maxStarDist = 750
+minStarDist = 5
+maxStarDist = 1000
 minPlanets = 2
 maxPlanets = 5
 minPlanetG = 50
@@ -37,7 +39,7 @@ blackHolePct = 1
 ringsPct = 1
 solDist = .25
 #starSpread = 2
-rescaleFactor = 2
+rescaleFactor = 1
 starSpread = (maxStarDist * rescaleFactor) / (numSystems * incPerCyc)
 
 starNames = """Acamar

@@ -128,17 +128,12 @@ class star:
                  name="unnamed-star",
                  sDist=0,
                  sAng=random.uniform(0,2*math.pi),
+                 temp = 100,
+                 size = 1.0,
                  blackHole="false"):
-
-        temp = random.randint(minStarTemp, maxStarTemp)
         
         x = int(math.cos(sAng) * sDist * starSpread)
         y = int(math.sin(sAng) * sDist * starSpread)
-
-        if blackHole=="true":
-            size = 5
-        else:
-            size = truncate(random.uniform(minStarSize, maxStarSize))
 
         prop=["name", 
               "temp", 
@@ -216,7 +211,7 @@ ID = 3
 radius = 5
 angle = 0
 solCreated = False
-supMass = star("Cignus A*", 0, 0, "true")
+supMass = star("Sagittarius A* ", 0, 0, 10, 5, "true")
 luna = genLuna()
 earth = genOverworld()
 earth.append(luna)
@@ -230,7 +225,12 @@ for name in starNameList:
     # grab a sample of planet names
     planetNames = random.sample(planetList, numPlanets)
     # append data to block
-    newStar = star(name, radius, angle)
+    newStar = star(name, 
+                   radius,
+                   angle,
+                   int(radius * 8) - 30,
+                   truncate(random.uniform(minStarSize, maxStarSize)))
+
     newStar.genSisters(name, random.randint(minStars, maxStars))
     ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
     galaxy.append(newStar.data)
