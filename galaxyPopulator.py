@@ -1,8 +1,5 @@
 import random
-import sys
-import starData
 import math
-
 from config import *
 
 def truncate(f):
@@ -103,7 +100,7 @@ class planet:
     def genMoons(self, num, startID):
         print("generating %s moons for %s" % (num, self.data.data[0].name))
         for i in range(num):
-            name = random.choice(starData.planetList)
+            name = random.choice(planetList)
             self.data.append(planet(name, startID+i, i/num, self.data.data[1][2].data[1]).data)
         return self
 
@@ -149,7 +146,7 @@ class star:
 
     def genPlanets(self, num, dimID):
         for i in range(num):
-            name = random.choice(starData.planetList)
+            name = random.choice(planetList)
             numMoons=random.randint(minMoons, maxMoons)
             distance=i/num
             pSize=200
@@ -160,7 +157,7 @@ class star:
 
 galaxy=dataBlock("galaxy")
 
-starNameList = random.sample(starData.starList, numSystems)
+starNameList = random.sample(starList, numSystems)
 ID = 3
 radius = 5
 angle = 0
@@ -169,7 +166,7 @@ for name in starNameList:
     # pick number of planets
     numPlanets = random.randint(minPlanets,maxPlanets)
     # grab a sample of planet names
-    planetNames = random.sample(starData.planetNames.split("\n"), numPlanets)
+    planetNames = random.sample(planetList, numPlanets)
     # append data to block
     newStar = star(name, radius, angle)
     ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
