@@ -1,7 +1,7 @@
 numArms = 4
-incPerCyc = 1
+incPerCyc = 0.5
 spirSeverity = 1
-numSystems = 200
+numSystems = 100
 minStars = 0
 maxStars = 3
 minStarSize = 0.25

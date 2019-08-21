@@ -1,50 +1,3 @@
-standardHeader = """<galaxy>
-\t<star name="Sol" temp="100" x="%s" y="%s" size="1.0" numPlanets="0" numGasGiants="0" >	
-\t\t<planet name="Earth" DIMID="0" dimMapping="">
-\t\t\t<isKnown>true</isKnown>
-\t\t\t<fogColor>1.0,1.0,1.0</fogColor>
-\t\t\t<skyColor>1.0,1.0,1.0</skyColor>
-\t\t\t<gravitationalMultiplier>100</gravitationalMultiplier>
-\t\t\t<orbitalDistance>100</orbitalDistance>
-\t\t\t<orbitalPhi>0</orbitalPhi>
-\t\t\t<rotationalPeriod>24000</rotationalPeriod>
-\t\t\t<atmosphereDensity>100</atmosphereDensity>
-\t\t\t<planet name="Luna" DIMID="2">
-\t\t\t\t<isKnown>true</isKnown>
-\t\t\t\t<fogColor>1.0,1.0,1.0</fogColor>
-\t\t\t\t<skyColor>1.0,1.0,1.0</skyColor>
-\t\t\t\t<gravitationalMultiplier>16</gravitationalMultiplier>
-\t\t\t\t<orbitalDistance>150</orbitalDistance>
-\t\t\t\t<orbitalPhi>0</orbitalPhi>
-\t\t\t\t<rotationalPeriod>672,000</rotationalPeriod>
-\t\t\t\t<atmosphereDensity>0</atmosphereDensity>
-\t\t\t\t<biomeIds>advancedrocketry:moon,advancedrocketry:moondark</biomeIds>
-\t\t\t</planet>
-\t\t</planet>\n"""
-
-planetHeader = """\t\t<planet name="%s" DIMID="%s">
-\t\t\t<isKnown>false</isKnown>
-\t\t\t<atmosphereDensity>%s</atmosphereDensity>
-\t\t\t<gravitationalMultiplier>%s</gravitationalMultiplier>
-\t\t\t<orbitalDistance>%s</orbitalDistance>
-\t\t\t<orbitalTheta>%s</orbitalTheta>
-\t\t\t<orbitalPhi>%s</orbitalPhi>
-\t\t\t<rotationalPeriod>%s</rotationalPeriod>
-\t\t\t<seaLevel>%s</seaLevel>\n"""
-
-moonHeader = """\t\t\t<planet name="%s" DIMID="%s">
-\t\t\t\t<isKnown>false</isKnown>
-\t\t\t\t<atmosphereDensity>%s</atmosphereDensity>
-\t\t\t\t<gravitationalMultiplier>%s</gravitationalMultiplier>
-\t\t\t\t<orbitalDistance>%s</orbitalDistance>
-\t\t\t\t<orbitalTheta>%s</orbitalTheta>
-\t\t\t\t<orbitalPhi>%s</orbitalPhi>
-\t\t\t\t<rotationalPeriod>%s</rotationalPeriod>
-\t\t\t\t<seaLevel>%s</seaLevel>\n"""
-
-starTag = '\t<star name="%s" temp="%s" x="%s" y="%s" size="%s" numPlanets="0" numGasGiants="0" blackHole="%s">\n'
-starTag2 = '\t\t<star name="%s" temp="%s" size="%s" separation="%s" />\n'
-
 starNames = """Acamar
 Achernar
 Achird
@@ -381,8 +334,7 @@ Zosma
 Zubenelgenubi
 Zubenelhakrabi
 Zubeneschamali"""
-
-
+starList = starNames.split("\n")
 # From https://www.fantasynamegenerators.com/planet_names.php
 planetNames = """Nimuria
 Dundunope
@@ -994,3 +946,4 @@ Llucumia
 Dethohiri
 Milia ZVS
 Grora 2VKC"""
+planetList = planetNames.split("\n")
