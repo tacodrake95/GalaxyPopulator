@@ -35,7 +35,7 @@ minMoonSea = 32
 maxMoonSea = 96
 blackHolePct = 1
 ringsPct = 1
-solDist = 0.75
+solDist = 5
 #starSpread = 2
 starSpread = maxStarDist /(numSystems * incPerCyc)
 

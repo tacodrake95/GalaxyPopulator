@@ -26,7 +26,7 @@ class tag:
         vLen = len(self.prop[0])
         dLen = len(self.prop[1])
         if vLen < dLen:
-            for i in range(dLen-vLen, dLen):
+            for i in range(dLen-1, dLen):
                 out = "%s %s" % (out, self.prop[1][i])
 
         return "%s>" % out
@@ -68,13 +68,13 @@ class planet:
     def __init__(self, 
                  name="untitled-planet", 
                  dimID=0, 
-                 distance=1, 
+                 distance=1.0, 
                  pSize=200, 
-                 aDens=random.randint(minPlanetAtm,maxPlanetAtm), 
-                 oTheta = random.randint(minPlanetTheta,maxPlanetTheta),
-                 oPhi = random.randint(-45,45)%360,
-                 rPer = random.randint(minPlanetRotPer,maxPlanetRotPer),
-                 seaLevel = random.randint(minMoonSea,maxMoonSea)):
+                 aDens=100, 
+                 oTheta = 0,
+                 oPhi = 0,
+                 rPer = 24000,
+                 seaLevel = 64):
 
         if random.randint(0,100) > ringsPct:
             rings = "false"
@@ -86,7 +86,6 @@ class planet:
 
         gMul = random.randint(int(pSize / 4), int(pSize/ 2))
         oDist = int(maxPlanetDistance * distance)
-        
         data = [dataBlock("isKnown", "false"),
                 dataBlock("atmosphereDensity", aDens),
                 dataBlock("gravitationalMultiplier", gMul),
@@ -101,13 +100,33 @@ class planet:
         print("generating %s moons for %s" % (num, self.data.data[0].name))
         for i in range(num):
             name = random.choice(planetList)
-            self.data.append(planet(name, startID+i, i/num, self.data.data[1][2].data[1]).data)
+            self.data.append(planet(name,
+                                    startID+i,
+                                    (i+1)/num,
+                                    self.data.data[1][2].data[1], 
+                                    random.randint(minPlanetAtm,maxPlanetAtm),
+                                    random.randint(minPlanetTheta,maxPlanetTheta),
+                                    random.randint(-45,45)%360,
+                                    random.randint(minPlanetRotPer,maxPlanetRotPer),
+                                    random.randint(minMoonSea,maxMoonSea)
+                                    ).data)
         return self
+
+
+class subStar:
+    def __init__(self,
+                 name="unnamed-star",
+                 oDist=1.0,
+                 temp=100):
+    
+        prop=["name", "temp", "separation"]
+        vals=[name, temp, oDist, "/"]
+        self.data=tag("star", prop, vals)
 
 class star:
     def __init__(self,
                  name="unnamed-star",
-                 sDist=random.randint(minStarDist, maxStarDist),
+                 sDist=0,
                  sAng=random.uniform(0,2*math.pi),
                  blackHole="false"):
 
@@ -117,12 +136,6 @@ class star:
         y = int(math.sin(sAng) * sDist * starSpread)
 
         size = truncate(random.uniform(minStarSize, maxStarSize))
-    
-    
-        if random.randint(0,1000) <= blackHolePct or blackHole == "true":
-            blackHole = "true"
-        else:
-            blackHole = "false"
 
         prop=["name", 
               "temp", 
@@ -144,16 +157,54 @@ class star:
 
         self.data = dataBlock("star", [], prop, vals)
 
+    def genSisters(self, name="unnamed-sister", num=1):
+        for i in range(num):
+            subStarData=subStar(name, i+1, random.randint(minStarTemp, maxStarTemp)).data.toXML()
+            self.data.append(subStarData)
+
     def genPlanets(self, num, dimID):
         for i in range(num):
             name = random.choice(planetList)
             numMoons=random.randint(minMoons, maxMoons)
-            distance=i/num
-            pSize=200
-            self.data.append( planet( name, dimID, distance ).genMoons( numMoons, dimID+1 ).data )
+            distance=(i+1)/num
+
+            self.data.append( planet(name, 
+                                     dimID,
+                                     distance,
+                                     200,
+                                     random.randint(minPlanetAtm, maxPlanetAtm),
+                                     random.randint(minPlanetTheta, maxPlanetTheta),
+                                     random.randint(-45, 45)%360,
+                                     random.randint(minPlanetRotPer, maxPlanetRotPer),
+                                     random.randint(minPlanetSea,maxPlanetSea)).genMoons(numMoons,dimID+1).data)
             dimID+=numMoons+1
         return dimID
 
+def genLuna():
+    prop=["name", "DIMID"]
+    vals=["Luna", 2]
+    data = [dataBlock("isKnown", "true"),
+            dataBlock("atmosphereDensity", 0),
+            dataBlock("gravitationalMultiplier", 17),
+            dataBlock("orbitalDistance", 100),
+            dataBlock("orbitalTheta", 0),
+            dataBlock("orbitalPhi", 0),
+            dataBlock("rotationalPeriod", 657520),
+            dataBlock("seaLevel", 64)]
+    return dataBlock("planet", data, prop, vals)
+
+def genOverworld():
+    prop=["name", "DIMID", "dimMapping"]
+    vals=["Earth", 0, ""]
+    data = [dataBlock("isKnown", "true"),
+            dataBlock("atmosphereDensity", 100),
+            dataBlock("gravitationalMultiplier", 100),
+            dataBlock("orbitalDistance", 100),
+            dataBlock("orbitalTheta", 0),
+            dataBlock("orbitalPhi", 23.5),
+            dataBlock("rotationalPeriod", 24000),
+            dataBlock("seaLevel", 64)]
+    return dataBlock("planet", data, prop, vals)
 
 galaxy=dataBlock("galaxy")
 
@@ -161,14 +212,25 @@ starNameList = random.sample(starList, numSystems)
 ID = 3
 radius = 5
 angle = 0
-
+solCreated = False
+supMass = star("Cignus A*", 0, 0, "true")
+luna = genLuna()
+earth = genOverworld()
+earth.append(luna)
+sol = star("Sol", solDist * maxStarDist/math.pow(starSpread, 2), random.randint(0,360))
+sol.data.append(earth)
+galaxy.append(supMass.data)
+galaxy.append(sol.data)
 for name in starNameList:
     # pick number of planets
     numPlanets = random.randint(minPlanets,maxPlanets)
     # grab a sample of planet names
     planetNames = random.sample(planetList, numPlanets)
     # append data to block
+    if radius >= solDist*maxStarDist:
+        newStar = star("Sol")
     newStar = star(name, radius, angle)
+    newStar.genSisters(name, random.randint(minStars, maxStars))
     ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
     galaxy.append(newStar.data)
     radius += incPerCyc
