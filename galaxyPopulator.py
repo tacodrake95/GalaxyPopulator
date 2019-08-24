@@ -207,7 +207,7 @@ def genOverworld():
 galaxy=dataBlock("galaxy")
 
 starNameList = random.sample(starList, numSystems)
-ID = 3
+ID = minDIMID
 radius = 5
 angle = 0
 solCreated = False

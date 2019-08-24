@@ -1,6 +1,8 @@
 import math
 
+minDIMID = 3
 numArms = 3
+numGalaxies = 2
 incPerCyc = 0.5
 spirSeverity = 1
 numSystems = 200
