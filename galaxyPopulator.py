@@ -64,13 +64,33 @@ class dataBlock:
         else:
             return "%s%s%s" % (header, data, footer)
 
+class gasGiant:
+    def __init__(self,
+                 name="untitled-gas-giant",
+                 distance=200,
+                 oTheta=0,
+                 oPhi=0):
+
+        rings = "true"
+
+        if random.randint(0,100) > ringsPct*10:
+            rings = "false"
+
+        prop=["name"]
+        vals=[name]
+
+        oDist = int(maxGasGiantDistance * distance) + minGasGiantDistance
+        
+        data =[dataBlock("isKnown", "false"),
+               dataBlock("orbitalDistance", distance)]
+
 class planet:
-    def __init__(self, 
-                 name="untitled-planet", 
-                 dimID=0, 
+    def __init__(self,
+                 name="untitled-planet",
+                 dimID=0,
                  distance=1.0, 
-                 pSize=200, 
-                 aDens=100, 
+                 pSize=200,
+                 aDens=100,
                  oTheta = 0,
                  oPhi = 0,
                  rPer = 24000,
@@ -93,7 +113,8 @@ class planet:
                 dataBlock("orbitalTheta", oTheta),
                 dataBlock("orbitalPhi", oPhi),
                 dataBlock("rotationalPeriod", rPer),
-                dataBlock("seaLevel", seaLevel)]
+                dataBlock("seaLevel", seaLevel),
+                dataBlock("hasRings", rings)]
         self.data = dataBlock("planet", data, prop, vals)
 
     def genMoons(self, num, startID):
@@ -126,14 +147,13 @@ class subStar:
 class star:
     def __init__(self,
                  name="unnamed-star",
-                 sDist=0,
-                 sAng=random.uniform(0,2*math.pi),
+                 x=0,
+                 y=0,
                  temp = 100,
                  size = 1.0,
                  blackHole="false"):
         
-        x = int(math.cos(sAng) * sDist * starSpread)
-        y = int(math.sin(sAng) * sDist * starSpread)
+        
 
         prop=["name", 
               "temp", 
@@ -204,41 +224,71 @@ def genOverworld():
             dataBlock("seaLevel", 64)]
     return dataBlock("planet", data, prop, vals)
 
-galaxy=dataBlock("galaxy")
 
-starNameList = random.sample(starList, numSystems)
+def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map = None, name = "Sagittarius A*", posX=0, posY=0):
+    
+    if type(map) != dataBlock:
+        map=dataBlock("galaxy")
+        firstRun = True
+    else:
+        firstRun = False
+
+    starNameList = random.sample(starList, numSystems)
+    
+    ID = startID 
+    incPerCyc = (oRad - iRad) * nArms / nStars
+
+    supMass = star(name, posX, posY, 100, math.pow(iRad, 1/3), "true")
+    map.append(supMass.data)
+
+    for i in range(int(nStars/nArms)):
+        # pick number of planets
+        numPlanets = random.randint(minPlanets,maxPlanets)
+        # grab a sample of planet names
+        planetNames = random.sample(planetList, numPlanets)
+        radius = (i * incPerCyc) + iRad
+        for a in range(nArms):
+            angle = ((a / nArms)) * (math.pi * 2) + (i * sSev)
+
+            x = int(math.cos(angle) * radius)
+            y = int(math.sin(angle) * radius)
+
+            if firstRun and i * nArms + a == int(solDist * nStars):
+                luna = genLuna()
+                earth = genOverworld()
+                earth.append(luna)
+                newStar = star("Sol", x + posX, y + posY)
+                newStar.data.append(earth)
+
+            else:
+                newStar = star(starNameList[i * nArms + a],
+                           x + posX,
+                           y + posY,
+                           int(radius * incPerCyc) - random.randint(30,60),
+                           truncate(random.uniform(minStarSize, maxStarSize)))
+                newStar.genSisters(name, random.randint(minStars, maxStars))
+                ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
+            # append data to block
+            
+            map.append(newStar.data)
+    return map
+
+map = None
+galaxyNameList = random.sample(bhList, numGalaxies)
 ID = minDIMID
-radius = 5
-angle = 0
-solCreated = False
-supMass = star("Sagittarius A* ", 0, 0, 10, 5, "true")
-luna = genLuna()
-earth = genOverworld()
-earth.append(luna)
-sol = star("Sol", solDist * maxStarDist / starSpread, random.randint(0,360))
-sol.data.append(earth)
-galaxy.append(supMass.data)
-galaxy.append(sol.data)
-for name in starNameList:
-    # pick number of planets
-    numPlanets = random.randint(minPlanets,maxPlanets)
-    # grab a sample of planet names
-    planetNames = random.sample(planetList, numPlanets)
-    # append data to block
-    newStar = star(name, 
-                   radius,
-                   angle,
-                   int(radius * 8) - 30,
-                   truncate(random.uniform(minStarSize, maxStarSize)))
+for i in range(numGalaxies):
+    numSystems = random.randint(minSystems, maxSystems)
+    numArms = random.randint(minArms, maxArms)
+    iRad = random.randint(minIRad, maxIRad)
+    oRad = random.randint(minORad, maxORad)
+    spirSeverity = random.uniform(minSpirSeverity, maxSpirSeverity)
 
-    newStar.genSisters(name, random.randint(minStars, maxStars))
-    ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
-    galaxy.append(newStar.data)
-    incPerCyc -= incPerCyc / (numSystems * numArms)
-    radius += (incPerCyc / numArms)
-    angle +=  (.864 * spirSeverity * radius / numSystems) + (math.tau / numArms)
-  
+    xPos = random.randint(minGalX, maxGalX)
+    yPos = random.randint(minGalY, maxGalY)
+
+    map = genGalaxy(numSystems, numArms, iRad, oRad, ID, spirSeverity, map, galaxyNameList[i], xPos, yPos)
+    ID += numSystems
 
 output = open("planetDefs.xml", "w")
-output.write(galaxy.toXML())
+output.write(map.toXML())
 output.close()
