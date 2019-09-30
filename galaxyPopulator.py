@@ -244,7 +244,7 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
         planetNames = random.sample(planetList, numPlanets)
         radius = (i * incPerCyc) + iRad
         for a in range(nArms):
-            angle = ((a / nArms) + math.pow(1 / (i+1), spirSeverity) + random.uniform(-0.03125, 0.03125)) * (math.pi * 2)
+            angle = ((a / nArms) + spirSeverity / ((i+1) * math.pow(nArms, 2)) + random.uniform(-0.03125, 0.03125)) * (math.pi * 2)
 
             x = int(math.cos(angle) * radius)
             y = int(math.sin(angle) * radius)
@@ -290,7 +290,7 @@ galPositions = []
 
 for i in range(numGalaxies):
     numSystems = random.randint(minSystems, maxSystems)
-    numArms = random.randint(minArms, maxArms)
+    nArms = random.choice(numArms)
     iRad = random.randint(minIRad, maxIRad)
     oRad = random.randint(minORad, maxORad)
     spirSeverity = random.uniform(minSpirSeverity, maxSpirSeverity)
@@ -312,7 +312,7 @@ for i in range(numGalaxies):
     else:
         first = False
     
-    ID = genGalaxy(numSystems, numArms, iRad, oRad, ID, spirSeverity, map, first, galaxyNameList[i], posX, posY)
+    ID = genGalaxy(numSystems, nArms, iRad, oRad, ID, spirSeverity, map, first, galaxyNameList[i], posX, posY)
     
 
 output = open("planetDefs.xml", "w")

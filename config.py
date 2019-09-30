@@ -5,17 +5,16 @@ minDIMID = 3 # Starting dimension ID
 minIRad = 15 # Minimum inner radius of galactic structures
 maxIRad = 25 # Maximum inner radius of galactic structures
 
-minORad = 150 # Minimum outer radius of galactic structures
-maxORad = 250 # Maximum outer radius of galactic structures
+minORad = 250 # Minimum outer radius of galactic structures
+maxORad = 350 # Maximum outer radius of galactic structures
 
-minArms = 2 # Minimum number of galactic arms
-maxArms = 3 # Maximum number of galactic arms
+numArms = [2,4] # List of numbers of arms to choose from
 
-minSystems = 20 # Minimum number of star systems per galaxy
-maxSystems = 50 # Maximum number of star systems per galaxy
+minSystems = 50 # Minimum number of star systems per galaxy
+maxSystems = 100 # Maximum number of star systems per galaxy
 
-minSpirSeverity = 1/2 # Minimum twist factor
-maxSpirSeverity = 1/3 # Maximum twist factor
+minSpirSeverity = 33 # Minimum twist factor
+maxSpirSeverity = 33 # Maximum twist factor
 
 minStars = 0 # Minimum number of sister stars
 maxStars = 0 # Maximum number of sister stars
