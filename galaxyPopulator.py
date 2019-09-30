@@ -244,10 +244,11 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
         planetNames = random.sample(planetList, numPlanets)
         radius = (i * incPerCyc) + iRad
         for a in range(nArms):
+            r = radius + random.uniform((oRad * radialJitter)/2, oRad * radialJitter)
             angle = ((a / nArms) + spirSeverity / ((i+1) * math.pow(nArms, 2)) + random.uniform(-angularJitter/2, angularJitter/2)) * (math.pi * 2)
 
-            x = int(math.cos(angle) * radius)
-            y = int(math.sin(angle) * radius)
+            x = int(math.cos(angle) * r)
+            y = int(math.sin(angle) * r)
 
             temp = int(lerp(minStarTemp, maxStarTemp, i * nArms / nStars)) + random.randint(-minStarTemp / 2, maxStarTemp / 2)
             size = truncate(random.uniform(minStarSize, maxStarSize))

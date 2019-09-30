@@ -24,6 +24,8 @@ numGalaxies = 4 # Number of galactic structures (WIP, not yet implemented)
 
 angularJitter = 0.0625 # How much randomness to apply to angles
 
+radialJitter = 0.0625
+
 minGalX = -500
 maxGalX = 1000
 minGalY = -500
