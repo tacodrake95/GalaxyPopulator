@@ -225,14 +225,8 @@ def genOverworld():
     return dataBlock("planet", data, prop, vals)
 
 
-def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map = None, name = "Sagittarius A*", posX=0, posY=0):
+def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, name = "Sagittarius A*", posX=0, posY=0):
     
-    if type(map) != dataBlock:
-        map=dataBlock("galaxy")
-        firstRun = True
-    else:
-        firstRun = False
-
     starNameList = random.sample(starList, numSystems)
     
     ID = startID 
@@ -266,16 +260,33 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map = None, name = "Sagi
                            y + posY,
                            int(radius * incPerCyc) - random.randint(30,60),
                            truncate(random.uniform(minStarSize, maxStarSize)))
-                newStar.genSisters(name, random.randint(minStars, maxStars))
+                if maxStars > 0:
+                    newStar.genSisters(name, random.randint(minStars, maxStars))
                 ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
             # append data to block
             
             map.append(newStar.data)
-    return map
+    return ID
+    #return map
 
-map = None
+def distance(tup1, tup2):
+    x1 = tup1[0]
+    y1 = tup1[1]
+
+    x2 = tup2[0]
+    y2 = tup2[1]
+
+    xLen = x2-x1
+    yLen = y2-y1
+
+    return math.sqrt(math.pow(xLen, 2) + math.pow(yLen, 2))
+
+map=dataBlock("galaxy")
 galaxyNameList = random.sample(bhList, numGalaxies)
 ID = minDIMID
+
+galPositions = []
+
 for i in range(numGalaxies):
     numSystems = random.randint(minSystems, maxSystems)
     numArms = random.randint(minArms, maxArms)
@@ -283,11 +294,24 @@ for i in range(numGalaxies):
     oRad = random.randint(minORad, maxORad)
     spirSeverity = random.uniform(minSpirSeverity, maxSpirSeverity)
 
-    xPos = random.randint(minGalX, maxGalX)
-    yPos = random.randint(minGalY, maxGalY)
+    posX = random.randint(minGalX, maxGalX)
+    posY = random.randint(minGalY, maxGalY)
 
-    map = genGalaxy(numSystems, numArms, iRad, oRad, ID, spirSeverity, map, galaxyNameList[i], xPos, yPos)
-    ID += numSystems
+    for i in range (len(galPositions)):
+        if distance(galPositions[i], (posX, posY)) < minGalSpread:
+            posX = random.randint(minGalX, maxGalX)
+            posY = random.randint(minGalY, maxGalY)
+
+
+    galPositions.append((posX, posY))
+
+    if i==0:
+        first = True
+    else:
+        first = False
+    
+    ID = genGalaxy(numSystems, numArms, iRad, oRad, ID, spirSeverity, map, first, galaxyNameList[i], posX, posY)
+    
 
 output = open("planetDefs.xml", "w")
 output.write(map.toXML())

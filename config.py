@@ -11,21 +11,23 @@ maxORad = 250
 minArms = 2
 maxArms = 7 # Number of spiral arms
 
-minSystems = 10
+minSystems = 20
 maxSystems = 50 # Number of star systems per galaxy
 
-minSpirSeverity = .133
-maxSpirSeverity = .234#(1 + math.sqrt(5)) / 2 # Twist factor
+minSpirSeverity = .1
+maxSpirSeverity = .2
 
 minStars = 0 # Minimum number of sister stars
-maxStars = 1 # Maximum number of sister stars
+maxStars = 0 # Maximum number of sister stars
 
 numGalaxies = 4 # Number of galactic structures (WIP, not yet implemented)
 
 minGalX = -500
-maxGalX = 500
+maxGalX = 1000
 minGalY = -500
-maxGalY = 500
+maxGalY = 1000
+
+minGalSpread = 400
 
 minStarSize = 0.25 # Smallest star size
 maxStarSize = 2.5 # Largest star size
