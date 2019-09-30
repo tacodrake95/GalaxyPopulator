@@ -8,18 +8,21 @@ maxIRad = 25 # Maximum inner radius of galactic structures
 minORad = 250 # Minimum outer radius of galactic structures
 maxORad = 350 # Maximum outer radius of galactic structures
 
-numArms = [2,4] # List of numbers of arms to choose from
+numArms = [2, 2, 2, 4, 4, 10] # List of numbers of arms to choose from
+                              # More instances of the same number increase the likelihood of that type
 
 minSystems = 50 # Minimum number of star systems per galaxy
 maxSystems = 100 # Maximum number of star systems per galaxy
 
-minSpirSeverity = 33 # Minimum twist factor
-maxSpirSeverity = 33 # Maximum twist factor
+minSpirSeverity = 43 # Minimum twist factor
+maxSpirSeverity = 57 # Maximum twist factor
 
 minStars = 0 # Minimum number of sister stars
 maxStars = 0 # Maximum number of sister stars
 
 numGalaxies = 4 # Number of galactic structures (WIP, not yet implemented)
+
+angularJitter = 0.03125
 
 minGalX = -500
 maxGalX = 1000
