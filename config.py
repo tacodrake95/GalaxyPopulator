@@ -14,15 +14,15 @@ numArms = [2, 2, 2, 4, 4, 10] # List of numbers of arms to choose from
 minSystems = 50 # Minimum number of star systems per galaxy
 maxSystems = 100 # Maximum number of star systems per galaxy
 
-minSpirSeverity = 43 # Minimum twist factor
-maxSpirSeverity = 57 # Maximum twist factor
+minSpirSeverity = 33 # Minimum twist factor
+maxSpirSeverity = 33 # Maximum twist factor
 
 minStars = 0 # Minimum number of sister stars
 maxStars = 0 # Maximum number of sister stars
 
 numGalaxies = 4 # Number of galactic structures (WIP, not yet implemented)
 
-angularJitter = 0.03125
+angularJitter = 0.0625 # How much randomness to apply to angles
 
 minGalX = -500
 maxGalX = 1000
