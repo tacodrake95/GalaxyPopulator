@@ -2,20 +2,20 @@ import math
 
 minDIMID = 3 # Starting dimension ID
 
-minIRad = 20 # Minimum distance from center of galactic structure
-maxIRad = 40 # Maximum distance from center of galactic structurei
+minIRad = 15 # Minimum inner radius of galactic structures
+maxIRad = 25 # Maximum inner radius of galactic structures
 
-minORad = 100
-maxORad = 250
+minORad = 150 # Minimum outer radius of galactic structures
+maxORad = 250 # Maximum outer radius of galactic structures
 
-minArms = 2
-maxArms = 7 # Number of spiral arms
+minArms = 2 # Minimum number of galactic arms
+maxArms = 3 # Maximum number of galactic arms
 
-minSystems = 20
-maxSystems = 50 # Number of star systems per galaxy
+minSystems = 20 # Minimum number of star systems per galaxy
+maxSystems = 50 # Maximum number of star systems per galaxy
 
-minSpirSeverity = .1
-maxSpirSeverity = .2
+minSpirSeverity = 1/2 # Minimum twist factor
+maxSpirSeverity = 1/3 # Maximum twist factor
 
 minStars = 0 # Minimum number of sister stars
 maxStars = 0 # Maximum number of sister stars

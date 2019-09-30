@@ -224,6 +224,8 @@ def genOverworld():
             dataBlock("seaLevel", 64)]
     return dataBlock("planet", data, prop, vals)
 
+def lerp(min, max, pos):
+    return pos * (max-min) + min
 
 def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, name = "Sagittarius A*", posX=0, posY=0):
     
@@ -232,7 +234,7 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
     ID = startID 
     incPerCyc = (oRad - iRad) * nArms / nStars
 
-    supMass = star(name, posX, posY, 100, math.pow(iRad, 1/3), "true")
+    supMass = star(name, posX, posY, 0, math.pow(iRad, 1/3), "true")
     map.append(supMass.data)
 
     for i in range(int(nStars/nArms)):
@@ -242,24 +244,23 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
         planetNames = random.sample(planetList, numPlanets)
         radius = (i * incPerCyc) + iRad
         for a in range(nArms):
-            angle = ((a / nArms)) * (math.pi * 2) + (i * sSev)
+            angle = ((a / nArms) + math.pow(1 / (i+1), spirSeverity) + random.uniform(-0.03125, 0.03125)) * (math.pi * 2)
 
             x = int(math.cos(angle) * radius)
             y = int(math.sin(angle) * radius)
+
+            temp = int(lerp(minStarTemp, maxStarTemp, i * nArms / nStars)) + random.randint(-minStarTemp / 2, maxStarTemp / 2)
+            size = truncate(random.uniform(minStarSize, maxStarSize))
 
             if firstRun and i * nArms + a == int(solDist * nStars):
                 luna = genLuna()
                 earth = genOverworld()
                 earth.append(luna)
-                newStar = star("Sol", x + posX, y + posY)
+                newStar = star("Sol", x + posX, y + posY, temp, size)
                 newStar.data.append(earth)
 
             else:
-                newStar = star(starNameList[i * nArms + a],
-                           x + posX,
-                           y + posY,
-                           int(radius * incPerCyc) - random.randint(30,60),
-                           truncate(random.uniform(minStarSize, maxStarSize)))
+                newStar = star(starNameList[i * nArms + a], x + posX, y + posY, temp, size)
                 if maxStars > 0:
                     newStar.genSisters(name, random.randint(minStars, maxStars))
                 ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
@@ -294,14 +295,15 @@ for i in range(numGalaxies):
     oRad = random.randint(minORad, maxORad)
     spirSeverity = random.uniform(minSpirSeverity, maxSpirSeverity)
 
-    posX = random.randint(minGalX, maxGalX)
-    posY = random.randint(minGalY, maxGalY)
-
-    for i in range (len(galPositions)):
-        if distance(galPositions[i], (posX, posY)) < minGalSpread:
-            posX = random.randint(minGalX, maxGalX)
-            posY = random.randint(minGalY, maxGalY)
-
+    farEnough = False
+    while not farEnough:
+        posX = random.randint(minGalX, maxGalX)
+        posY = random.randint(minGalY, maxGalY)
+        farEnough = True
+        for i in range(len(galPositions)):
+            d = distance(galPositions[i], (posX, posY))
+            if d < minGalSpread:
+                farEnough = False
 
     galPositions.append((posX, posY))
 
