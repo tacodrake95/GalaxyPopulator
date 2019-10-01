@@ -236,19 +236,19 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
 
     supMass = star(name, posX, posY, 0, math.pow(iRad, 1/3), "true")
     map.append(supMass.data)
-
+    angle = random.randint(-180, 180) * math.pi / 180
     for i in range(int(nStars/nArms)):
         # pick number of planets
         numPlanets = random.randint(minPlanets,maxPlanets)
         # grab a sample of planet names
         planetNames = random.sample(planetList, numPlanets)
         radius = (i * incPerCyc) + iRad
-        for a in range(nArms):
+        for arm in range(nArms):
             r = radius + random.uniform((oRad * radialJitter)/2, oRad * radialJitter)
-            angle = ((a / nArms) + spirSeverity / ((i+1) * math.pow(nArms, 2)) + random.uniform(-angularJitter/2, angularJitter/2)) * (math.pi * 2)
+            a = angle + ((arm / nArms) + spirSeverity / ((i+1) * math.pow(nArms, 2)) + random.uniform(-angularJitter/2, angularJitter/2)) * (math.pi * 2)
 
-            x = int(math.cos(angle) * r)
-            y = int(math.sin(angle) * r)
+            x = int(math.cos(a) * r)
+            y = int(math.sin(a) * r)
 
             temp = int(lerp(minStarTemp, maxStarTemp, i * nArms / nStars)) + random.randint(-minStarTemp / 2, maxStarTemp / 2)
             size = truncate(random.uniform(minStarSize, maxStarSize))
@@ -261,7 +261,7 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
                 newStar.data.append(earth)
 
             else:
-                newStar = star(starNameList[i * nArms + a], x + posX, y + posY, temp, size)
+                newStar = star(starNameList[i * nArms + arm], x + posX, y + posY, temp, size)
                 if maxStars > 0:
                     newStar.genSisters(name, random.randint(minStars, maxStars))
                 ID = newStar.genPlanets(random.randint(minPlanets, maxPlanets), ID)
@@ -302,7 +302,7 @@ for i in range(numGalaxies):
         posY = random.randint(minGalY, maxGalY)
         farEnough = True
         for i in range(len(galPositions)):
-            d = distance(galPositions[i], (posX, posY))
+            d = math.hypot(galPositions[i][0] - posX, galPositions[i][0] - posY)
             if d < minGalSpread:
                 farEnough = False
 
