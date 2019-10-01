@@ -118,7 +118,6 @@ class planet:
         self.data = dataBlock("planet", data, prop, vals)
 
     def genMoons(self, num, startID):
-        print("generating %s moons for %s" % (num, self.data.data[0].name))
         for i in range(num):
             name = random.choice(planetList)
             self.data.append(planet(name,
@@ -244,7 +243,7 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
         planetNames = random.sample(planetList, numPlanets)
         radius = (i * incPerCyc) + iRad
         for arm in range(nArms):
-            r = radius + random.uniform((oRad * radialJitter)/2, oRad * radialJitter)
+            r = radius + random.uniform(0, oRad * radialJitter)
             a = angle + ((arm / nArms) + spirSeverity / ((i+1) * math.pow(nArms, 2)) + random.uniform(-angularJitter/2, angularJitter/2)) * (math.pi * 2)
 
             x = int(math.cos(a) * r)
@@ -253,13 +252,13 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
             temp = int(lerp(minStarTemp, maxStarTemp, i * nArms / nStars)) + random.randint(-minStarTemp / 2, maxStarTemp / 2)
             size = truncate(random.uniform(minStarSize, maxStarSize))
 
-            if firstRun and i * nArms + a == int(solDist * nStars):
+            if firstRun and i * nArms + arm == int(solDist * nStars):
                 luna = genLuna()
                 earth = genOverworld()
                 earth.append(luna)
                 newStar = star("Sol", x + posX, y + posY, temp, size)
                 newStar.data.append(earth)
-
+                ID = ID + 2
             else:
                 newStar = star(starNameList[i * nArms + arm], x + posX, y + posY, temp, size)
                 if maxStars > 0:
@@ -272,6 +271,8 @@ def genGalaxy(nStars, nArms, iRad, oRad, startID, sSev, map, firstRun = True, na
     #return map
 
 def distance(tup1, tup2):
+    print("tup1:")
+    print(tup1)
     x1 = tup1[0]
     y1 = tup1[1]
 
@@ -283,38 +284,45 @@ def distance(tup1, tup2):
 
     return math.sqrt(math.pow(xLen, 2) + math.pow(yLen, 2))
 
+
 map=dataBlock("galaxy")
 galaxyNameList = random.sample(bhList, numGalaxies)
 ID = minDIMID
 
-galPositions = []
+galPositions = [(0,0)]
+
 
 for i in range(numGalaxies):
+    print(i)
     numSystems = random.randint(minSystems, maxSystems)
     nArms = random.choice(numArms)
     iRad = random.randint(minIRad, maxIRad)
     oRad = random.randint(minORad, maxORad)
     spirSeverity = random.uniform(minSpirSeverity, maxSpirSeverity)
-
-    farEnough = False
-    while not farEnough:
-        posX = random.randint(minGalX, maxGalX)
-        posY = random.randint(minGalY, maxGalY)
-        farEnough = True
-        for i in range(len(galPositions)):
-            d = math.hypot(galPositions[i][0] - posX, galPositions[i][0] - posY)
-            if d < minGalSpread:
-                farEnough = False
-
-    galPositions.append((posX, posY))
-
+    
     if i==0:
         first = True
+        posX = 0
+        posY = 0
     else:
+        a = i / (numGalaxies-1) * 2 * math.pi
+        r = random.randint(minGalR, maxGalR)
+        posX = int(math.cos(a) * r)
+        posY = int(math.sin(a) * r)
         first = False
-    
-    ID = genGalaxy(numSystems, nArms, iRad, oRad, ID, spirSeverity, map, first, galaxyNameList[i], posX, posY)
-    
+
+    ID = genGalaxy(numSystems,
+                   nArms,
+                   iRad,
+                   oRad,
+                   ID,
+                   spirSeverity,
+                   map,
+                   first,
+                   galaxyNameList[i],
+                   posX,
+                   posY)
+     
 
 output = open("planetDefs.xml", "w")
 output.write(map.toXML())
