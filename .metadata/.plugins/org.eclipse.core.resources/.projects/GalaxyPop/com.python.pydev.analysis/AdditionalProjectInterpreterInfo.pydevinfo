@@ -1,0 +1,67 @@
+-- VERSION_5
+-- START DISKCACHE_2
+F:\Git\GalaxyPopulator\.metadata\.plugins\org.eclipse.core.resources\.projects\GalaxyPop\com.python.pydev.analysis\v2_indexcache
+galaxyPopulator|1569981184347000000|F:\Git\GP\galaxyPopulator.py
+config|1569977520866000000|F:\Git\GP\config.py
+-- END DISKCACHE
+-- START DICTIONARY
+15
+7=gasGiant
+14=star.__init__
+10=star
+12=planet.__init__
+8=planet
+13=subStar.__init__
+15=tag.__init__
+3=F:\Git\GP\config.py
+9=subStar
+1=F:\Git\GP\galaxyPopulator.py
+11=dataBlock.__init__
+6=dataBlock
+2=galaxyPopulator
+5=tag
+4=config
+-- END DICTIONARY
+-- START TREE 1
+30
+ID|1|ID!1^450#1*19@
+a|1|a!1^452#1*19@
+ang|1|angularJitter!3^27#1*35@
+bhl|1|bhList!3^83#5*35@
+bhn|1|bhNames!3^82#5*35@
+bla|1|blackHolePct!3^67#1*35@
+dat|1|dataBlock!1^35#7*17@
+dis|1|distance!1^432#5*18@
+gal|1|galaxyNameList!1^448#1*19@
+gas|1|gasGiant!1^68#7*17@
+gen|11|genTitan!1^317#5*18@genOverworld!1^233#5*18@genEuropa!1^275#5*18@genJupiter!1^262#5*18@genSol!1^333#5*18@genLuna!1^203#5*18@genVenus!1^216#5*18@genMars!1^246#5*18@genSaturn!1^289#5*18@genEnceladus!1^304#5*18@genGalaxy!1^380#5*18@
+ler|1|lerp!1^377#5*18@
+map|1|map!1^447#1*19@
+max|21|maxPlanetDistance!3^50#1*35@maxPlanetTheta!3^52#1*35@maxGalR!3^32#1*35@maxPlanetAtm!3^49#1*35@maxPlanetG!3^47#1*35@maxPlanetRotPer!3^54#1*35@maxMoonTheta!3^62#1*35@maxMoons!3^58#1*35@maxMoonRotPer!3^64#1*35@maxSystems!3^15#1*35@maxORad!3^9#1*35@maxSpirSeverity!3^18#1*35@maxGasGiantDistance!3^43#1*35@maxStars!3^21#1*35@maxMoonAtm!3^60#1*35@maxStarSize!3^35#1*35@maxPlanetSea!3^56#1*35@maxMoonSea!3^66#1*35@maxPlanets!3^45#1*35@maxIRad!3^6#1*35@maxStarTemp!3^38#1*35@
+min|21|minStars!3^20#1*35@minMoonAtm!3^59#1*35@minMoonTheta!3^61#1*35@minStarSize!3^34#1*35@minStarTemp!3^37#1*35@minPlanets!3^44#1*35@minMoonRotPer!3^63#1*35@minDIMID!3^3#1*35@minIRad!3^5#1*35@minMoons!3^57#1*35@minSystems!3^14#1*35@minSpirSeverity!3^17#1*35@minPlanetSea!3^55#1*35@minPlanetG!3^46#1*35@minPlanetTheta!3^51#1*35@minPlanetAtm!3^48#1*35@minGasGiantDistance!3^42#1*35@minPlanetRotPer!3^53#1*35@minMoonSea!3^65#1*35@minGalR!3^31#1*35@minORad!3^8#1*35@
+nar|1|nArms!1^449#1*19@
+num|2|numGalaxies!3^23#1*35@numArms!3^11#1*35@
+out|1|output!1^500#1*19@
+pla|3|planetNames!3^78#5*35@planet!1^88#7*17@planetList!3^79#5*35@
+r|1|r!1^455#1*19@
+rad|1|radialJitter!3^29#1*35@
+res|1|rescaleFactor!3^70#1*35@
+rin|1|ringsPct!3^68#1*35@
+ske|1|skew!3^25#1*35@
+sol|1|solDist!3^69#1*35@
+sta|3|starNames!3^73#5*35@star!1^147#7*17@starList!3^74#5*35@
+sub|1|subStar!1^137#7*17@
+tag|1|tag!1^12#7*17@
+tru|1|truncate!1^6#5*18@
+typ|1|typeList!3^40#1*35@
+-- END TREE
+-- START TREE 2
+7
+__i|6|__init__!5&1^13#9*18@__init__!6&1^36#9*18@__init__!7&1^69#9*18@__init__!8&1^89#9*18@__init__!9&1^138#9*18@__init__!10&1^148#9*18@
+app|1|append!6&1^46#9*18@
+dat|4|data!11&1^44#9*19@data!12&1^119#9*19@data!13&1^145#9*19@data!14&1^176#9*19@
+gen|3|genPlanets!10&1^183#9*18@genMoons!8&1^121#9*18@genSisters!10&1^178#9*18@
+nam|1|name!15&1^14#9*19@
+pro|1|prop!15&1^15#9*19@
+tox|2|toXML!5&1^17#9*18@toXML!6&1^49#9*18@
+-- END TREE

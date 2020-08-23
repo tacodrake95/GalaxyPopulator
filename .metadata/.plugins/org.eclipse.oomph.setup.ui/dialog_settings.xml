@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="OptInDialog">
+		<item key="DIALOG_MESSAGE" value="Do you want to save your preferences on the Eclipse.org server so you can share them on other workstations?"/>
+		<item key="DIALOG_WIDTH" value="441"/>
+		<item key="DIALOG_HEIGHT" value="258"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="org.eclipse.oomph.setup.ui.synchronizer.SynchronizerDialog">
+		<item key="dialogWidth" value="800"/>
+		<item key="dialogHeight" value="600"/>
+	</section>
+</section>
